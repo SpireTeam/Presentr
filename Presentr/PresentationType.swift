@@ -16,6 +16,7 @@ import Foundation
 /// - bottomHalf: This takes up half of the screen, on the bottom side.
 /// - fullScreen: This takes up the entire screen.
 /// - dynamic: Uses autolayout to calculate width & height. Have to provide center position.
+/// - dynamicHeight: Uses autolayout to calculate the height while constraining to the device width. Must provide center. Can provide a padding.
 /// - custom: User provided custom width, height & center position.
 public enum PresentationType {
 
@@ -25,6 +26,7 @@ public enum PresentationType {
     case bottomHalf
     case fullScreen
     case dynamic(center: ModalCenterPosition)
+    case dynamicHeight(center: ModalCenterPosition, sideMargin: Float?)
     case custom(width: ModalSize, height: ModalSize, center: ModalCenterPosition)
 
     /// Describes the sizing for each Presentr type. It is meant to be non device/width specific, except for the .custom case.
@@ -42,7 +44,7 @@ public enum PresentationType {
             return (.full, .full)
         case .custom(let width, let height, _):
             return (width, height)
-        case .dynamic:
+        case .dynamic, .dynamicHeight:
             return nil
         }
     }
@@ -63,6 +65,8 @@ public enum PresentationType {
         case .custom(_, _, let center):
             return center
         case .dynamic(let center):
+            return center
+        case .dynamicHeight(let center, _):
             return center
         }
     }

@@ -14,6 +14,7 @@ import Foundation
  - Center:       Center of the screen.
  - TopCenter:    Center of the top half of the screen.
  - BottomCenter: Center of the bottom half of the screen.
+ - Bottom:       Aligns to the bottom of the screen.
  - Custom: A custom center position using a CGPoint which represents the center point of the presented view controller.
  - Custom: A custom center position to be calculated, using a CGPoint which represents the origin of the presented view controller.
  */
@@ -22,6 +23,7 @@ public enum ModalCenterPosition {
     case center
     case topCenter
     case bottomCenter
+    case bottom
     case custom(centerPoint: CGPoint)
     case customOrigin(origin: CGPoint)
 
@@ -43,6 +45,8 @@ public enum ModalCenterPosition {
         case .bottomCenter:
             return CGPoint(x: containerFrame.origin.x + (containerFrame.width / 2),
                            y: containerFrame.origin.y + (containerFrame.height * (3 / 4)))
+        case .bottom:
+            return nil
         case .custom(let point):
             return point
         case .customOrigin(_):
@@ -50,8 +54,13 @@ public enum ModalCenterPosition {
         }
     }
 
-    func calculateOrigin() -> CGPoint? {
+  func calculateOrigin(_ containerFrame: CGRect, presentedViewSize: CGSize, margin: CGFloat) -> CGPoint? {
         switch self {
+        case .bottom:
+          var point = CGPoint.zero
+          point.x = (containerFrame.width - presentedViewSize.width) / 2.0
+          point.y = containerFrame.height - presentedViewSize.height - margin
+          return point
         case .customOrigin(let origin):
             return origin
         default:

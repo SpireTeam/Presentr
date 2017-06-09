@@ -199,7 +199,7 @@ extension PresentrController {
         if let center = getCenterPointFromType() {
             origin = calculateOrigin(center, size: size)
         } else {
-            origin = getOriginFromType() ?? CGPoint(x: 0, y: 0)
+            origin = getOriginFromType(size: size) ?? CGPoint(x: 0, y: 0)
         }
         
         presentedViewFrame.size = size
@@ -296,6 +296,11 @@ fileprivate extension PresentrController {
         guard let size = presentationType.size() else {
             if case .dynamic = presentationType {
                 return Float(presentedViewController.view.systemLayoutSizeFitting(UILayoutFittingCompressedSize).width)
+            } else if case .dynamicHeight(_, let margin) = presentationType {
+                let m = margin ?? 0
+                var desiredSize = UILayoutFittingCompressedSize
+                desiredSize.width = parentSize.width - (CGFloat(m) * 2.0)
+                return Float(presentedViewController.view.systemLayoutSizeFitting(desiredSize, withHorizontalFittingPriority: 1000, verticalFittingPriority: 250).width)
             }
             return 0
         }
@@ -307,6 +312,11 @@ fileprivate extension PresentrController {
         guard let size = presentationType.size() else {
             if case .dynamic = presentationType {
                 return Float(presentedViewController.view.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height)
+            } else if case .dynamicHeight(_, let margin) = presentationType {
+                let m = margin ?? 0
+                var desiredSize = UILayoutFittingCompressedSize
+                desiredSize.width = parentSize.width - (CGFloat(m) * 2.0)
+                return Float(presentedViewController.view.systemLayoutSizeFitting(desiredSize, withHorizontalFittingPriority: 1000, verticalFittingPriority: 250).height)
             }
             return 0
         }
@@ -320,9 +330,14 @@ fileprivate extension PresentrController {
         return position.calculateCenterPoint(containerBounds)
     }
 
-    func getOriginFromType() -> CGPoint? {
+    func getOriginFromType(size: CGSize) -> CGPoint? {
+        let containerBounds = containerFrame
         let position = presentationType.position()
-        return position.calculateOrigin()
+        var actualMargin: CGFloat = 0.0
+        if case .dynamicHeight(_, let margin) = presentationType {
+          actualMargin = CGFloat(margin ?? 0)
+        }
+        return position.calculateOrigin(containerBounds, presentedViewSize: size, margin: actualMargin)
     }
 
     func calculateOrigin(_ center: CGPoint, size: CGSize) -> CGPoint {
