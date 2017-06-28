@@ -44,7 +44,7 @@ class PresentrController: UIPresentationController, UIAdaptivePresentationContro
 
     fileprivate var shouldObserveKeyboard: Bool {
         return conformingPresentedController != nil ||
-            (keyboardTranslationType != .none && presentationType == .popup) // TODO: Work w/other types?
+            (keyboardTranslationType != .none) // TODO: Work w/other types? TODO2: Removed the limits on this.
     }
 
     fileprivate var containerFrame: CGRect {
