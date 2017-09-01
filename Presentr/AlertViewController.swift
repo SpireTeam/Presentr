@@ -247,7 +247,7 @@ extension AlertViewController {
             return false
         }
 
-        #if swift(>=3.2)
+        #if swift(>=4.0)
             guard let font = CGFont(provider) else {
                 print("Error loading font. Could not create CGFont from CGDataProvider.")
                 return false
