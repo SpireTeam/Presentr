@@ -337,6 +337,11 @@ fileprivate extension PresentrController {
         if case .dynamicHeight(_, let margin) = presentationType {
           actualMargin = CGFloat(margin ?? 0)
         }
+        if #available(iOS 11, *) {
+          if let guide = presentedView?.safeAreaInsets.bottom {
+            actualMargin = actualMargin + guide
+          }
+        }
         return position.calculateOrigin(containerBounds, presentedViewSize: size, margin: actualMargin)
     }
 
