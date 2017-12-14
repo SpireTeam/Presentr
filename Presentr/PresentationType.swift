@@ -44,7 +44,7 @@ public enum PresentationType {
             return (.full, .full)
         case .custom(let width, let height, _):
             return (width, height)
-        case .dynamic, .dynamicHeight:
+        case .dynamic(_), .dynamicHeight:
             return nil
         }
     }
