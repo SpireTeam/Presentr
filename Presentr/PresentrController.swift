@@ -310,7 +310,7 @@ fileprivate extension PresentrController {
                 let m = margin ?? 0
                 var desiredSize = UILayoutFittingCompressedSize
                 desiredSize.width = parentSize.width - (CGFloat(m) * 2.0)
-                return Float(presentedViewController.view.systemLayoutSizeFitting(desiredSize, withHorizontalFittingPriority: 1000, verticalFittingPriority: 250).width)
+                return Float(presentedViewController.view.systemLayoutSizeFitting(desiredSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250)).width)
             }
             return 0
         }
@@ -326,7 +326,7 @@ fileprivate extension PresentrController {
                 let m = margin ?? 0
                 var desiredSize = UILayoutFittingCompressedSize
                 desiredSize.width = parentSize.width - (CGFloat(m) * 2.0)
-                return Float(presentedViewController.view.systemLayoutSizeFitting(desiredSize, withHorizontalFittingPriority: 1000, verticalFittingPriority: 250).height)
+                return Float(presentedViewController.view.systemLayoutSizeFitting(desiredSize, withHorizontalFittingPriority: UILayoutPriority(rawValue: 1000), verticalFittingPriority: UILayoutPriority(rawValue: 250)).height)
             }
             return 0
         }
